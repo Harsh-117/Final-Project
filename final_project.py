@@ -1,236 +1,287 @@
-list_of_names=[]
-list_of_DOB=[]
-list_of_contact_num=[]
-list_of_email=[]
-list_of_password=[]
-users_list=[list_of_names,list_of_DOB,list_of_contact_num,list_of_email,list_of_password]
-list_of_food=[ "tandoori chicken (4 pieces) [INR 240]","vegan burger (1piece)[INR 320]","truffle cake (500gm)[INR 900]"]
-food_info={"101":{"Name":"tandoori chicken","Quantity": " 4 pieces","Price":240,"Discount":0,"stock left":0},
-            "102":{"Name":"vegan burger","Quantity":"1 piece","Price":320,"Discount":0,"stock left":0},
-             "103":{"Name":"traffle cake","Quantity":"500 gram","Price":900,"Discount":0,"stock left":0}}
+class admin:
+    
+    def __init__(self,email,password,food_data):
+        self.ad_email=email
+        self.ad_pass=password
+        self.food_data=food_data
 
-pos=0
+    def start(self):
+        print("\nSelect one option from the following :")
+        print("1.Add new food items \n2.Edit food items \n3.View food items \n4.Remove a food item \n5.Exit\n")
+        m=input()
+        if m=="1":
+            self.add_new_food_item()
+        elif m=="2":
+            self.edit_food_items()
+        elif m=="3":
+            self.view_food_items()
+        elif m=="4":
+            self.remove_food_item()
+        elif m=="5":
+            sys.exit()
+        else:
+            print("Please choose correct option")
+            self.start()
+
+    def add_new_food_item(self):
+        x=[]
+        name = input("Enter the name of the food item : \n")
+        x.append(name)
+        quantity=input("Enter the quantity of the food item...ex : 500 gm, 2 pieces, 1 piece\n")
+        x.append(quantity)
+        price=input("Enter the price of the food item...ex : INR 200, INR 20\n")
+        x.append(price)
+        discount=input("Enter the discount for the food item...ex : 10% OFF, 20% OFF\n")
+        x.append(discount)
+        stock=int(input("Enter the stock of the food item...ex : 5, 2\n"))
+        x.append(stock)
+        self.food_data.append(x)
+        print("Food item added successfully")
+        self.start()    
+    
+    def edit_food_items(self):
+        
+        print("\nSelect a food item to edit")
+        for i in range(len(self.food_data)):
+            print(str(i+1),end=". ")
+            print(self.food_data[i])
+        l=int(input())
+        print("Selected food item is : \n")
+        print(self.food_data[l-1])
+        print("\nSelect from the below to edit the selected food item:")
+        print("\n1.Edit name \n2.Edit quantity \n3.Edit price \n4.Edit discount \n5.Edit stock \n6.Go back")
+        xx=input()
+        if xx=="1":
+            self.food_data[l-1][0]=input("Enter name to change: ")
+            print("Name successfully changed")
+        elif xx=="2":
+            self.food_data[l-1][1]=input("Enter quantity to change: ")
+            print("Quantity successfully changed")
+        elif xx=="3":
+            self.food_data[l-1][2]=input("Enter price to change: ")
+            print("Price successfully changed")
+        elif xx=="4":
+            self.food_data[l-1][3]=input("Enter discount to change: ")
+            print("Discount successfully changed")
+        elif xx=="5":
+            self.food_data[l-1][4]=input("Enter stock to change: ")
+            print("Stock successfully changed")
+        elif xx==6:
+            self.start()
+        else:
+            print("Please choose correct option")
+            self.edit_food_items()            
+
+
+
+        self.start()
+
+
+    def remove_food_item(self):
+        print("\nSelect a food item to remove")
+        print("Example: For selecting 1st and 2nd items type 1 2")
+        for i in range(len(self.food_data)):
+            print(str(i+1),end=". ")
+            print(self.food_data[i])
+        l=list(map(int,input().split()))
+        print("\nSelected items are: \n")
+        x=[]
+        for i in range(len(l)):
+            print(str(l[i]),end=". ")
+            print(self.food_data[l[i]-1])
+        print("Type Yes to Confirm and delete the above mentioned items")
+        print("Type No to Cancel and go back")
+        y=input()
+        if y=="Yes":
+            for i in l:
+                del self.food_data[i-1]
+            print("Food items selected are successfully deleted")
+        elif y=="No":
+            self.start()
+        print()
+        self.start()
+
+
+    def view_food_items(self):
+        print("Available food items are: ")
+        for i in range(len(self.food_data)):
+            print(str(i+1)+". "+self.food_data[i][0]+" ("+self.food_data[i][1]+") "+" ["+self.food_data[i][2]+"] "+
+            "Discount: "+self.food_data[i][3]+" Items in stock :"+str(self.food_data[i][4]))
+        print()
+        
+        self.start()
+
+        
+        
+
+
+
+
 class user:
     
+    def __init__(self,email,password,full_name,phone,address,food_data,prev_orders):
+        self.email = email
+        self.password = password
+        self.full_name = full_name
+        self.phone = phone
+        self.address = address
+        self.user_data = []
+        self.food_data = food_data
+        self.prev_orders = prev_orders
     
-    def __init__(self):
-        pass
+    def create(self):
+        self.user_data.append(self.email)
+        self.user_data.append(self.password)
+        self.user_data.append(self.full_name)
+        self.user_data.append(self.phone)
+        self.user_data.append(self.address)
+        self.application()
 
-    def  register(self):
-        name=self.NAME()
-        dob=self.DOB()
-        contact=self.contact_num()
-        email_id=self.email()
-        Password=self.password()
-        print("Congratulations! Your account has been created! Login and order your delicious meal now")
-        self.login_user()
-    
-   
-    def NAME(self):
-        print("enter name")
-        name=input().split("-")
-        self.name=name
-        list_of_names.append(name)
-    def DOB(self):
+    def application(self):
+        print("\nChoose any one option from the following :")
+        print("1.Place new order \n2.Order History \n3.Update Profile \n4.Exit")
+        m=input()
+        if m=="1":
+            self.place_order()
+        elif m=="2":
+            self.order_history()
+        elif m=="3":
+            self.update_profile()
+        elif m=="4":
+            sys.exit()
+        else:
+            print("Please choose correct option")
+            self.application()
 
-        print("enter your date of birth in format dd-mm-yyyy")
-        DOB=input().split("-")
-        self.dob=DOB
-        list_of_DOB.append(DOB)
-    def contact_num(self):
-        print("enter contact number")
-        num=input()
-        import re
-        if (re.search("[0-9]{10}",num)):
-            self.contact=num
-            list_of_contact_num.append(num)
-            return
-        else:
-            print("contact number is 10 digits number ,fill it again")
-            contact_num()
-    def email(self):
-        print("enter email address")
-        email_add=input()
-        import re
-        if email_add in list_of_email:
-            print("this email id is already registered ,please login")
-            list_of_names.pop(len(list_of_names)-1)
-            list_of_DOB.pop(len(list_of_DOB)-1)
-            list_of_contact_num.pop(len(list_of_contact_num)-1)
-        else:
-            if( re.search("[a-zA-Z]+[0-9]+.*@gmail.com$",email_add)):
-                list_of_email.append(email_add)
-                self.email=email_add
-                
-            else:
-                print("email_address must start with an alphabet ,then it shoulh have one or more digit and  should have a domain @gmail.com")
-                email()
-    def password(self):
-        print("enter your password")
-        word=input()
-        import re
-        if(re.search("[a-zA-Z]+.[0-9]+.",word)):
-            self.password=word
-            list_of_password.append(word)
-        else:
-            print("password must begin with an alphabet ,must contain one special character and one or more digits")
-            password()
+    def place_order(self):
+        print("\nSelect items from the below list")
+        print("Example: For selecting 1st and 2nd items type 1 2")
+        for i in range(len(self.food_data)):
+            print(str(i+1)+". "+self.food_data[i][0]+" ("+self.food_data[i][1]+") "+" ["+self.food_data[i][2]+"]")
+        l=list(map(int,input().split()))
+        print("\nSelected items are: \n")
+        x=[]
+        for i in range(len(l)):
+            print(str(l[i])+". "+self.food_data[l[i]-1][0]+" ("+self.food_data[l[i]-1][1]+") "+" ["+self.food_data[l[i]-1][2]+"]")
+            x.append(str(l[i])+". "+self.food_data[l[i]-1][0]+" ("+self.food_data[l[i]-1][1]+") "+" ["+self.food_data[l[i]-1][2]+"]")
+        print()
+        m=0
+        for i in range(len(l)):
+            if self.food_data[l[i]-1][4]==0:
+                    m=1
+                    print(self.food_data[l[i]-1][0]+" is out of stock\n")
 
-    def login_user(self):
-        print("enter your email address")
-        x=input()
-        if x in list_of_email:
-            print("enter password")
-            y=input()
-            if y==list_of_password[list_of_email.index(x)]:
-                print("enter 1 for placing an order \nenter 2 for checking order history \nenter 3 to update profile")
-                z=int(input())
-                if z==1:
-                    print(list_of_food)
-                    if input("want to order something,press Yes or No")=="yes":
-                        self.order()
-                    else:
-                        pass
-                elif z==2:
-                    self.show_order()
-                    print("pleas log in your account")
-                    self.login_user()
-                elif z==3:
-                    self.update_profile()
-                    print("pleas log in your account see changes ")
-                    self.login_user()
+                    
+        if m==1:
+            print("Type Change to select other items or Cancel to go back\n")
+            zz=input()
+            if zz=="Change":
+                self.place_order()
+            elif zz=="Cancel":
+                self.application()
+        print("\nType Yes to confirm your order and No to go back")
+        print("Type Change to change your order\n")
+        m=input()
+        if m=="Yes":
+            print("\nOrder confirmed\n")
+            self.prev_orders.append(x)
+            for i in range(len(l)):
+                self.food_data[l[i]-1][4]-=1
+            self.application()
+        elif m=="No":
+            self.application()
+        elif m=="Change":
+            self.place_order()
 
-            else:
-                print("password does not match with the email id")
+    def order_history(self):
+        print("These are the previous orders:\n")
+        if len(self.prev_orders)==0:
+            print("No orders placed, to view order history please order an item.\n")
+            self.application()
         else:
-            print("the email id is not registered")
-    
-    def order(self):
-        self.list_of_order=[]
-        for i in range(len(list_of_food)):
-            print("enter",i+1,"for",list_of_food[i])
-        z=list(map(int,input().split(",")))
-        for i in z:
-            print("You have selected ",list_of_food[i-1])
-        print("Do you want to place your order? enter OK to place your order")
-        if(input()=="ok"):
-            for i in z:
-                self.list_of_order.append(list_of_food[i-1])
-            print("Your order has been placed,Enjoy your meal")
-        else:
-            return
-        
-        print("Do you want to go befores option?Enter yes")
-        x=input()
-        if x=="yes":
-            print ("login to your account")
-            self.login_user()
-        else:
-            return
-        
-       
-    
-    
-    def show_order(self):
-        print(self.list_of_order)
-    
-    
+            for i in self.prev_orders:
+                print(i)
+            self.application()
+
     def update_profile(self):
-        print("NAME",self.name)
-        print("DOB",self.dob)
-        print("contact",self.contact)
-        print("Email id",self.email)
-        print("Password",self.password)
-        x=input("what do you want to update")
-        if(x=="NAME"):
-            name= self.NAME()
-            print("profile updated")
-        elif(x=="DOB"):
-            dob= self.DOB()
-            print("profile updated")
-        elif(x=="contact number"):
-            contact=self.contact_num()
-            print("profile updated")
-        elif(x=="email Id"):
-            email= self.email()
-            print("profile updated")
-        elif(x=="password"):
-            Password=self.password()
-            print("profile updated")
+        #email password full name phone address
+        print("\nChoose the below options to change data")
+        print("1.Email \n2.Password \n3.Full Name \n4.Phone \n5.Address \n6.Change another data \n7.Exit\n" )
+        mm=input()
+        if mm=="1":
+            print("Enter new Email to update: ")
+            self.user_data[0]=input()
+            print("Email updated successfully")
+            self.update_profile()
+        elif mm=="2":
+            print("Enter new Password to update: ")
+            self.user_data[1]=input()
+            print("Password updated successfully")
+            self.update_profile()
+        elif mm=="3":
+            print("Enter new Full Name to update: ")
+            self.user_data[2]=input()
+            print("Full Name updated successfully")
+            self.update_profile()
+        elif mm=="4":
+            print("Enter new Phone to update: ")
+            self.user_data[3]=input()
+            print("Phone update successfully")
+            self.update_profile()
+        elif mm=="5":
+            print("Enter new Address to update: ")
+            self.user_data[4]=input()
+            print("Address update successfully")
+            self.update_profile()
+        elif mm=="6":
+            self.update_profile()
+        elif mm=="7":
+            self.application()
         else:
-            print('You have not selected anythng to be updated')
-class admin:
-    def __init__(self):
-        pass
-    def admin_functions(self):
-        print("enter 1to view  the food item and related info \n enter 2 to add more food items \n enter 3 to edit information of food items")
-        y=int(input())
-        if y==1:
-            self.show_food_list()
-        elif y==2:
-            self.add_more_food()
-        elif y==3:
-            self.edit_food_info()
-        print("Do you want to be here more?Enter yes")
-        x=input()
-        if x=="yes":
-            self.admin_functions()
-        else:
-            return
-    def login_admin(self):
-        print("enter your email id")
-        admin_mail=input()
-        print("enter password")
-        admin_pass=input()
-        print("Admin login successful")
-        self.admin_functions()
-    
-    def show_food_list(self):
-                   print(food_info)
-    def add_more_food(self):
-                   a={}
-                   food_info[input("enter food id")]=a
-                   a["Name"]=input("enter name of food item")
-                   a["Quantity"]=input("enter quantity per serving")
-                   a["price"]=int(input("enter price per serve"))
-                   a["discount"]=int(input("offer customer some discount"))
-                   a["stocK_left"]=int(input("enter stocks left"))
-    def edit_food_info(self):
-        print("enter id of food item you want to make changes on ")
-        x=input()
-        if x not in food_info:
-            print("There is no food item with this id")
-        else:
-            print(food_info[x])
-            print("enter 1 to change the name \n enter 2 to change the quantity \n enter 3 to change the price \n enter 4 to change discount \n enter 5 to change the stock left \n enter 6 to delete the fod item from the menu")
-            y=int(input())
-            if y==1:
-                food_info[x]["Name"]=input("enter new name")
-            elif y==2:
-                food_info[x]["Quantity"]=input("enter new quantity")
-            elif y==3:
-                food_info[x]["Pice"]=int(input("enter new price"))
-            elif y==4:
-                food_info[x]["Discount"]=int(input("enter new discount"))
-            elif y==5:
-                food_info[x]["stock left"]=int(input("enter new stock left"))
-            elif y==6:
-                del food_info[x]
-            else:
-                print("Data has been updated")
-                return
-print("please enter 1 if you are a user \n 2 if you are an admin")
-x=int(input())
-if x==1:
-    u=user()
-    print("Are you already registered ,if yes then enter 1 to directly login \n 2 to register if you are new here")
-    a=int(input())
-    if a==1:
-        u.login_user()
-    elif a==2:
-        u.register()
-elif x==2:
-    a=admin()
-    a.login_admin()
+            print("Please choose correct option")
+            self.update_profile()
 
- #In[ ]
+        
+ 
+
+def take_input(food_data,prev_orders):
+    
+        user_input=input()
+        if user_input=="1": #admin login
+            ad_email=input("Enter admin email: ")
+            ad_pass= input("Enter admin password: ")
+            print()
+            if ad_email=="admin-vimalkuku@gmail.com" and ad_pass=="food.python":
+                admin_login=admin(ad_email,ad_pass,food_data)
+                admin_login.start()
+            else:
+                print("Please enter correct email and password")
+                choose()
+    
+        elif user_input=="2": #new user
+            full_name=input("Enter your full name: ")
+            phone=input("Enter your phone number: ")
+            email=input("Enter your email address: ")
+            address=input("Enter your address: ")
+            password=input("Enter your password: ")
+            create_user=user(email,password,full_name,phone,address,food_data,prev_orders)
+            create_user.create()
+        elif user_input=="3":
+            sys.exit()
+
+        else:
+            print("Please choose correct option")
+            choose()
+ 
+    
+
+def choose():
+    print("\nChoose any one option from the following :")
+    print("1.Admin login \n2.User Login \n3.Exit\n")
+    take_input([["Tandoori Chicken","4 pieces","INR 240","10% OFF",2],
+    ["Vegan Burger","1 piece","INR 320","10% OFF",2],
+    ["Truffle Cake","500 gm","INR 900","10% OFF",2]],[])
+
+
+print("Welcome to Food Ordering App")
+choose()
